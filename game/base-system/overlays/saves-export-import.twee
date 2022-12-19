@@ -1,0 +1,63 @@
+:: Saves Export/Import Overlay [widget]
+
+<<widget "optionsExportImport">>
+
+<<if SugarCube.Browser.isMobile.any() is true>>
+	请注意，当前在Android上无法保存和加载文件。
+<<else>>
+	<<set $_errorCount to document.querySelectorAll('.error').length>>
+	<<set $_dolErrorCount to document.querySelectorAll('.dol-error').length>>
+	<<set $_customErrorCount to Errors.log.length>>
+	<<set $_bypassRestrictions to $debug is 1 or $_errorCount gt 0 or $_dolErrorCount gt 0 or $_customErrorCount gt 0>>
+	加载文件: <input id="saveImport" type="file" value="从文件加载" onchange="importSave(this.files)">
+	<br><br>
+	<<if $passage is "Start" or $passage is "Start2">>
+		在导出为文件前请先加载一个存档
+	<<elseif $ironmanmode>>
+		<<if $_bypassRestrictions>>
+			<input type="button" value="保存到文件" onclick="IronMan.exportCurrent()">
+		<<else>>
+			在铁人模式下无法保存到文件。只能导出自动保存。
+		<</if>>
+	<<elseif ($replayScene is undefined) or $_bypassRestrictions>>
+		<<set _exportName to "'degrees-of-lewdity"+($saveName isnot ''?'-'+$saveName:'')+ "'">>
+		<input type="button" value="保存到文件" @onclick="'updateExportDay();SugarCube.Save.export('+_exportName+')'">
+	<<else>>
+		无法正确保存。
+	<</if>>
+<</if>>
+<br>
+
+<span class="gold">文件导入/导出</span>
+<<if !($dancing is 0 and $combat is 0 and $replayScene is undefined)>>
+	<span class="red"><b>处于战斗中，仅将生成的保存数据用于错误报告！！</b></span><br>
+<</if>>
+	此功能允许您在一个或多个设备不允许访问保存文件时（如在Android上）在设备之间传输保存。
+	<br>
+	要保存，请单击“获取保存数据”，然后在需要时复制并粘贴保存数据。
+	<br>
+	要加载，请粘贴保存数据，然后单击“加载保存数据”。
+	<br>
+	要在Android系统之间进行传输，建议使用电子邮件或pastebin等服务。请确保保存的开始和结束准确无误，以防止出现问题。
+	<br>
+	单击“复制文本区域”为您复制当前内容。如果您的设备或浏览器不支持，按钮将变为为“复制错误”。
+	<br><br>
+	<textarea id="saveDataInput" rows="4" cols="40" onClick="if(V.disableAutoSelect == false)this.select();"><<if _presetData>>_presetData<</if>></textarea>
+	<br>
+	<input type="button" value="清除" onclick="clearTextBox('saveDataInput')"/>
+	<input type="button" value="跳转至顶端" onclick="topTextArea('saveDataInput')"/>
+	<input type="button" value="跳转至底部" onclick="bottomTextArea('saveDataInput')"/>
+	<<if $ironmanmode is true>>
+		<input type="button" value="获得存档数据" disabled>
+	<<else>>
+		<input type="button" value="获得存档数据" onclick="getSaveData()"/>
+	<</if>>
+	<input type="button" value="加载存档数据" onclick="loadSaveData()"/>
+	<input id="CopyTextArea" type="button" value="复制存档数据" onclick="copySavedata('saveDataInput')">
+<br><br>
+<label>
+	<<print '<<checkbox "$disableAutoSelect" false true '+($disableAutoSelect is true? "checked":"")+'>>'>>
+	关闭自动选择
+</label>
+<br><br>
+<</widget>>

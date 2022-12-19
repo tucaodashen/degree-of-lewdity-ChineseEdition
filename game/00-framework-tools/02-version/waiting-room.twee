@@ -1,0 +1,27 @@
+:: Upgrade Waiting Room
+
+欢迎来到Degrees of Lewdity <<print StartConfig.version>>。我们正在对您的游戏进行一些更改，使其支持此最新版本。
+
+如果情况一切正常，请记得更新你的存档。
+
+<<silently>>
+<<variablesVersionUpdate>>
+<<pregnancyVar>>
+
+<<if $reducedLineHeight is true>><<addclass "#passages" "reducedLineHeight">><</if>>
+<<set $runWardrobeSanityChecker to true>>
+<</silently>>
+
+看样子完事了。
+
+<<link [[Resume|$navigation.stack.last()]]>><<run $navigation.stack.pop()>><</link>>
+
+:: Downgrade Waiting Room
+
+欢迎回到Degrees of Lewdity <<- StartConfig.version>>.
+<br><br>
+您已经从<<- $saveVersions.last()>>切换到此版本, 所以我们只是想确认一下您是否知道您在做什么？
+<br><br>
+<<link [[是|$passage]]>><</link>>
+<br>
+<span class="red">如果你想避免一些潜在问题，请返回上一版本</span>

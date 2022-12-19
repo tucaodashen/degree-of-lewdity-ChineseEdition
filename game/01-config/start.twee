@@ -1,0 +1,119 @@
+:: StoryData
+{
+"ifid": "A6AFB52D-38F2-4CB5-86A8-54BF665670D6",
+"format": "SugarCube",
+"format-version": "2.23.4"
+}
+
+:: StoryTitle
+Degrees of Lewdity
+
+:: Start [nosave exitCheckBypass]
+<<if $intro is undefined>>
+	<<gameStartOnly>>
+<</if>>
+<!-- <<effects>> --> <!-- commented this out - why were we running effects without a working player init'd? -->
+
+<<if $options.images is 1>>
+	<img class="resize" src="img/misc/banner.png">
+<</if>>
+
+此游戏包含性描写，不适合未成年玩家。所有的角色 <span class="camouflage text"><a onclick="V.debug = 1, V.debugdisable = 'f', V.options.maxStates = 5"></a></span>均已超过18岁！
+<br><br>
+
+存档文件保存在你的浏览器缓存中。如果你要关闭游戏，请记得在“保存”一栏中导出为文件以防止丢失游戏进度。
+<br><br>
+
+如果快速启动模式中的文件损坏，请确保你正确解压了所有文件
+/*
+<<if $options.images is 1>>
+	If you have, you may want to overwrite the "img" folder with one from a fresh download of the game.
+<</if>>
+*/
+<br><br>
+
+<span class="red">角色和快速启动只能在游戏开始时设置或选择</span> 其他设置在游戏中也可以进行更改。
+<br><br>
+
+<<set $settingsExitPassage to "Start2">>
+<<initsettings>>
+<<settings>>
+
+:: Start2 [exitCheckBypass]
+
+<<variablesStart2>>
+<!-- <<effects>> --> <!-- commented this out - why were we running effects without a working player init'd? -->
+
+欢迎来到alpha版本的Degrees of Lewdity!
+<br><br>
+
+如果你想在游戏中轻松一些，请谨记要穿着得体，尽量在光线明亮的场所活动。不要在夜晚外出。过于清凉的穿着会引起他人的注意，无论好坏！
+<br><br>
+
+<<if $season is "winter">>
+	<<set $schoolterm to 0>>
+	学校在 <<ampm 9 00>>上课。坐公交车逛逛这个小镇是个不错的选择。还有一件事，别忘了穿校服！
+<<elseif $season is "spring" or $season is "summer">>
+	明天<<ampm 9 00>>上学。 坐公交车逛逛这个小镇是个不错的选择。还有一件事，别忘了穿校服！
+<<else>>
+	新学年在明天<<ampm 9 00>>开始。坐公交车逛逛这个小镇是个不错的选择。还有一件事，别忘了穿校服！
+<</if>>
+<br><br>
+
+<<doVersionCheck>>
+
+<<link [[继续|Orphanage Intro]]>><</link>>
+
+<br><br>
+
+<<if $debug is 1>>
+	使用debug模式启动，带有5000£的初始金额
+	<br>
+	<<link [[标准启动|Orphanage Intro]]>><<cheatStart>><</link>>
+	<br>
+	<<link [[从学校启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><</link>>
+	<br>
+	<<link [[从科学课启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><<pass 2 hours>><</link>>
+	<br>
+	<<link [[从数学课启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><<pass 3 hours>><</link>>
+	<br>
+	<<link [[从英语课启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><<pass 4 hours>><</link>>
+	<br>
+	<<link [[从历史课启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><<pass 6 hours>><</link>>
+	<br>
+	<<link [[从游泳课启动|Oxford Street]]>><<cheatStart>><<pass 1 day>><<pass 7 hours>><</link>>
+	<br>
+	<<link [[测试房间]]>><<cheatStart>><<upperstrip>><<lowerstrip>><<underlowerstrip>><</link>>
+	<br>
+	<<link [[Robin Low Trauma Low Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 0>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 2>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin Low Trauma Medium Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 50>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 2>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin Low Trauma High Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 90>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 2>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin High Trauma Low Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 0>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin High Trauma Medium Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 50>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin High Trauma High Love|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Robin")].love to 90>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin After Paying Police With Money|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $daily.robin.policePay to 1>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+	<<link [[Robin After Paying Police With Body|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $daily.robin.policeBody to 1>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+	<<link [[罗宾偿还的债务|Robin's Room Entrance]]>><<cheatStart>><<npc Robin>><<endevent>><<set $robinpaid to 1>><<set $NPCName[$NPCNameList.indexOf("Robin")].init to 1>><<set $trauma to ($traumamax / 7) * 4>><<trauma 60>><</link>>
+	<br>
+
+
+	<br><br>
+
+	<<link [[从冬天开始|Orphanage Intro]]>><<set $days to 92>><<set $yeardays to 92>><<set $monthday to 1>><<set $month to "december">><<set $season to "winter">><<set $weather to "snow">><</link>> (Begins the game at the start of winter. For testing.)
+	<br>
+
+	<<link [[从圣诞节开始|Orphanage Intro]]>><<npc Kylar>><<person1>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Kylar")].state to "active">><<set $days to 115>><<set $yeardays to 115>><<set $monthday to 23>><<set $month to "december">><<set $season to "winter">><<set $weather to "snow">><<set $money += 50000>><</link>> (Begins the game two days before Christmas. For testing.)
+	<br>
+
+	<<link [[从情人节开始|Orphanage Intro]]>><<set $days to 162>><<set $yeardays to 162>><<set $monthday to 12>><<set $month to "february">><<set $season to "winter">><<set $weather to "clear">><</link>> (Begins the game 2 days before Valentine's Day. For testing.)
+	<br>
+
+<</if>>

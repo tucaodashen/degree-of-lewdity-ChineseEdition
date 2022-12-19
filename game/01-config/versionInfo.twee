@@ -1,0 +1,26 @@
+:: Widgets Version Info [widget]
+<<widget "versioninfo">>
+
+<br><br>
+
+Degrees of Lewdity <<print StartConfig.version>>
+<br><<if StartConfig.sneaky>>SNEAKY BUILD<</if>><br>
+
+计划发行版 zh-cn
+<br>
+[[吐槽大神_Official汉化| "https://space.bilibili.com/115015298?spm_id_from=333.788.0.0"]]
+<br><br>
+
+更多信息与下载最新版 [[https://vrelnir.blogspot.com/| "https://vrelnir.blogspot.com/"]]
+<br><br>
+
+支持开发 [[https://subscribestar.adult/vrelnir| "https://subscribestar.adult/vrelnir"]]
+<br><br>
+非官方发行版
+<br>
+翻译可能有不当之处
+<br>
+受个人水平限制
+<br>
+敬请谅解
+<</widget>>

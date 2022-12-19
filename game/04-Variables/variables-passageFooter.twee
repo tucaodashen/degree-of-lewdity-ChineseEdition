@@ -1,0 +1,110 @@
+:: PassageFooter
+<div id="gameVersionDisplay">
+	<<if $options.passageCount is "total">>
+		页面统计: <<print $passageCount>> |
+	<</if>>
+	<<if $options.passageCount is "changes">>
+		页面变化统计: <<print $passageChangesCount>> |
+	<</if>>
+	<<if $options.playtime>>
+		游戏时间: <<print msToTime(($saveDetails.playTime ? $saveDetails.playTime : 0) + ($saveDetails.loadTime ? new Date() - $saveDetails.loadTime : 0))>> |
+	<</if>>
+	<<print StartConfig.version>><<if StartConfig.sneaky>> SNEAKY<</if>>
+</div>
+<div id="gameVersionDisplay2"><<print StartConfig.version.slice(1)>></div>
+<<if $passage isnot "Start">>
+	<div id="feat"></div>
+	<div id="mobileStats"></div>
+	<div id="exportWarning" @class="'no-numberify ' + ($days gte $saveDetails.exported.days + $saveDetails.exported.frequency ? '':'hidden')">
+		<span class="red">记得导出你的存档哦~</span> |
+		<<link "Help me export">><<overlayReplace "optionsExportImport">><</link>> |
+		<<link "Ignore for now">><<set $saveDetails.exported.days to Math.floor($days - ($saveDetails.exported.frequency * 0.5))>><<addclass #exportWarning "hidden">><</link>>
+	</div>
+<</if>>
+<<if $replayScene isnot undefined>>
+	<<if $replayScene.startPassage is $passage or $passage is "Scene Viewer End">>
+	<<elseif !$replayScene.passages.includes($passage)>>
+		<!-- todo: replace goto with something that doesn't have a potential to fuck up the history -->
+		<<goto "Scene Viewer End">>
+	<</if>>
+	<<if $replayScene is undefined>>
+	<<elseif $replayScene.startPassage>>
+		<<run delete $replayScene.startPassage>>
+	<</if>>
+<</if>>
+<div id="customOverlayContainer" class="customOverlayContainer no-numberify hidden" onclick="closeOverlay()">
+	<div id="customOverlay" class="customOverlay hidden" onclick="event.stopPropagation()">
+		<div id="customOverlayTitle"></div>
+		<div id="customOverlayContent"></div>
+	</div>
+</div>
+
+<<if $combat is 1>>
+	<<printCombatMenu>>
+<</if>>
+
+<<if $debug is 1>>
+	<<checkTimeSystem "Footer">>
+<</if>>
+
+<<if !Story.has($passage)>>
+	<br>
+	请报告此情况，然后重新加载以前的保存，或从页面底部的紧急出口返回您所在的最后一个安全位置。
+	<<if $options.maxStates gt 1>>
+		或者，使用历史深度功能返回上一段。
+	<</if>>
+	<br>
+	<<set _exit to $safePassage ? $safePassage : "Bedroom">>
+	<span id="next"><<link [[Back to safety|_exit]]>><<endcombat>><<clotheson>><</link>></span>
+<<elseif !_link and !tags().includes("exitCheckBypass")>>
+	/* Does not trigger if the scene has a red link. Those will probably be reported anyway */
+	<br>
+	<<error {
+		信息	: `此页面 ${$passage} 无可用链接。`,
+		源	: `上一页面: ${$passagePrev} | phase: ${$phase} | rng: ${$rng}.`
+	}>>
+	<br><br>
+	请报告此情况,
+	<<if $cheatdisable is "f">>
+		除非你是通过作弊造成的,
+	<</if>>
+	你可以重新加载以前的保存，或者从页面底部的紧急出口到您所在的最后一个安全位置。
+	<<if $options.maxStates gt 1>>
+		也可以使用历史深度功能返回上一段。
+	<</if>>
+	<br><br><br>
+	<<set _exit to $safePassage ? $safePassage : "Bedroom">>
+	<span id="next"><<link [[安全返回|_exit]]>><<endcombat>><<clotheson>><</link>></span>
+<</if>>
+
+<!-- handle autosaves in the footer, so the description getter don't have to guess what happened in the passage -->
+<<if _autosavehere and !_preventUpdate and !$options.autosaveDisabled>>
+	<<run Save.autosave.save(null, {"saveId":$saveId, "saveName":$saveName})>>
+	<<run setSaveDetail("autosave",{"saveId":$saveId,"saveName":$saveName},Story.get($passage).description())>>
+<</if>>
+
+<<if $debugdisable is "f">>
+	<<set _normalised to scanNaNs(V)>>
+	<<if _normalised neq null>>
+		<<error {
+			消息: "已检测到损坏的变量。",
+			源: "以下变量的值无效：\n" + JSON.stringify(_normalised) +
+			"\n\n当前页面为： '" + $passage + "'\n请将此问题报告到discord中的#bugs-report",
+			exportable: false,
+		}>>
+		<br>
+		在截图之前，请展开上面的框（单击左侧的下拉箭头）。
+		<br><br>
+		<div id="nanClear">
+			如果开发人员建议您这样做，您可以单击下面重置损坏的变量。
+			<br>
+			<<link "Reset Corrupted Variables">>
+				<<silently>><<run objectAssignDeep(V, _normalised)>><</silently>>
+				<<replace "#nanClear" t8n>><span class="green">变量已清除。</span><</replace>>
+			<</link>>
+			<br>
+			<span class="red">警告：这会将所有损坏的变量设置为0。这可能会对您的游戏状态产生意外的后果。谨慎使用！</span>
+		</div>
+		<br><br>
+	<</if>>
+<</if>>

@@ -1,0 +1,284 @@
+:: Options Overlay [widget]
+<<widget "setupOptions">>
+	<<set _optionsRefresh to false>>
+	<<script>>
+		settingsDisableElement();
+		window.Theme.initControl();
+		onInputChanged(() => {
+			if(!T.optionsRefresh) T.optionsRefresh = true;
+		});
+	<</script>>
+<</widget>>
+
+<<widget "optionsgeneral">>
+	<<setupOptions>>
+	<span class="gold">通用设置</span>
+	<br>
+
+	<<if $debug is 1>>
+		/*<label><<checkbox "$notifyUpdate" false true autocheck>> Notify when there's a new game update available</label>
+		<br>*/
+		<<link "Check for updates">>
+			<<run checkNewVersion()>>
+		<</link>>
+		<br><br>
+	<</if>>
+
+	主题:
+	<label><input type="radio" name="theme" value="dark" /> 深色</label> |
+	<label><input type="radio" name="theme" value="arctic" /> 北极蓝</label> |
+	<label><input type="radio" name="theme" value="zen" /> Zenburn主题</label> |
+	<label><input type="radio" name="theme" value="monokai" /> vscode主题</label> |
+	<label><input type="radio" name="theme" value="storm" /> 风暴蓝</label> |
+	<label><input type="radio" name="theme" value="system-default" /> 系统默认</label>
+	<br>
+
+	行高: <<link "1.75">><<unset $reducedLineHeight>><<removeclass "#passages" "reducedLineHeight">><</link>> | <<link "1.5">><<set $reducedLineHeight to true>><<addclass "#passages" "reducedLineHeight">><</link>>
+	<br><br>
+	
+	<label>
+		<<checkbox "$options.neverNudeMenus" false true autocheck>>
+		在菜单中隐藏玩家裸体
+	</label>
+	<br>
+
+	<label data-disabledif="V.ironmanmode===true">
+		<<checkbox "$options.autosaveDisabled" false true autocheck>> 关闭睡眠中自动保存
+	</label>
+	<br>
+	<br>
+	
+	<span class="gold">游戏缩放</span> <span class="red">在一些浏览器中存在问题</span><mouse class="tooltip linkBlue">(?)<span>将允许您调整游戏元素和文本的大小，默认是100。
+	50会缩放到一半，200会放大到两倍。
+	测试按钮不会保存。
+	<span class="red">
+		请小心此设置！只有当您对所做的更改感到满意时才进行保存，因为重新加载游戏会将其重置为保存时使用的最后一个值。
+		根据设备和浏览器的不同，设置可能会无效，并可能导致意外效果。请根据需要报告这些问题。
+	</span></span></mouse>
+	<br>
+	<<numberslider "$zoom" $zoom 50 200 1>>
+	<input type="button" value="测试" onclick="zoom()"/>
+	<br><br>
+	<input type="button" value="重置" onclick="zoom(100, true)"/>
+	<input type="button" value="保存设置" onclick="zoom(undefined, true)"/>
+	<br><br>
+
+	<span class="gold">侧边栏</span>
+	<br>
+
+	<label><<checkbox "$options.showCaptionText" false true autocheck>> 在侧边栏显示概要</label>
+	<br>
+
+	侧边栏人物渲染器:
+	<label><<radiovar "$options.sidebarRenderer" "img">><<updatesidebarimg>><</radiovar>> 旧的</label> |
+	<label><<radiovar "$options.sidebarRenderer" "canvas">><<updatesidebarimg>><</radiovar>> 新的</label> |
+	<label><<radiovar "$options.sidebarRenderer" "both">><<updatesidebarimg>><</radiovar>> 共用</label>
+	<br>
+
+	显示胡椒喷雾方式:
+	<label><<radiovar "$options.pepperSprayDisplay" "sprays">><<updatesidebarimg>><</radiovar>> 喷雾罐</label> |
+	<label><<radiovar "$options.pepperSprayDisplay" "compact">><<updatesidebarimg>><</radiovar>> 紧凑型(点)</label> |
+	<label><<radiovar "$options.pepperSprayDisplay" "none">><<updatesidebarimg>><</radiovar>> 不显示</label>
+	<br>
+
+	侧边栏人物状态:
+	<label><<radiobutton "$options.sidebarStats" "disabled" autocheck>> 显示</label> |
+	<label><<radiobutton "$options.sidebarStats" "limited" autocheck>> 只显示重要消息</label> |
+	<label><<radiobutton "$options.sidebarStats" "all" autocheck>> 全部显示</label>
+	<br>
+
+	侧边栏时间:
+	<label><<radiobutton "$options.sidebarTime" "disabled" autocheck>> 显示</label> |
+	<label><<radiobutton "$options.sidebarTime" "top" autocheck>> 在侧边栏上方显示</label> |
+	<label><<radiobutton "$options.sidebarTime" "bottom" autocheck>> 在侧边栏下方显示</label>
+	<br>
+	<br>
+
+	<span class="gold">战斗</span>
+	<br>
+	战斗控制:
+	<label><<radiobutton "$options.combatControls" "radio" autocheck>> 单选按钮</label> |
+	<label><<radiobutton "$options.combatControls" "columnRadio" autocheck>> 一列</label> |
+	<label><<radiobutton "$options.combatControls" "lists" autocheck>> 下拉列表 (无宽度限制)</label> |
+	<label><<radiobutton "$options.combatControls" "limitedLists" autocheck>> 下拉列表 (有宽度限制)</label>
+	<br>
+
+	将自己作为选择目标("Yourself" as a target option我不太懂是什么意思):
+	<label><<radiobutton "$options.targetYourself" false autocheck>> 关闭</label> |
+	<label><<radiobutton "$options.targetYourself" true autocheck>> 启用</label>
+	<br>
+
+	<label>
+		<<checkbox "$options.scrollRemember" false true autocheck>>
+		战斗中恢复滚动位置
+	</label>
+
+	<<if $map isnot undefined>>
+		<br>
+		<br>
+		<span class="gold">地图</span>
+		<br>
+		<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapMovement" false true autocheck>> 允许点击地图图标移动</label>
+		<br>
+		<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapLegacy" false true autocheck>> 关闭SVG地图，如地图不显示启用。</label>
+		<br>
+		<label data-target="['images', 'maplegacy]" data-disabledif="V.options.images===0||V.options.mapLegacy"><<checkbox "$options.mapMarkers" false true autocheck>> 在地图上显示可点击区域</label>
+		<br>
+		<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapTop" false true autocheck>> 将地图移动到地图链接之上</label>
+	<</if>>
+
+	<br>
+	<br>
+
+	<span class="gold">覆盖层</span>
+	<br>
+	菜单的关闭按钮位置
+	<mouse class="tooltip-small linkBlue">(?)<span>下一次覆盖层使用时生效</span></mouse><br>
+	<label><<radiobutton "$options.closeButtonMobile" false autocheck>> 默认</label> |
+	<label><<radiobutton "$options.closeButtonMobile" true autocheck>> 移动端 (左手侧)</label>
+	<br>
+	<br>
+
+	<span class="gold">扩展信息</span>
+	<br>
+	在屏幕右上显示页面统计数
+	<br>
+	<label><<radiobutton "$options.passageCount" "disabled" autocheck>> 关闭</label> |
+	<label><<radiobutton "$options.passageCount" "changes" autocheck>> 页面改变数</label>
+	<mouse class="tooltip linkBlue">(?)<span>新段落更改的总次数（就是进度）。不包括设置页，在“0.3.12.X”和更早版本中未跟踪</span></mouse> |
+	<label><<radiobutton "$options.passageCount" "total" autocheck>> 页面计数</label>
+	<mouse class="tooltip linkBlue">(?)<span>新段落更改的总次数（就是进度）。不包括设置页，在“0.3.12.X”和更早版本中未跟踪</span></mouse>
+	<br>
+	<br>
+	在右上角显示游戏时间
+	<mouse class="tooltip linkBlue">(?)<span>格式为时：分：秒。请注意，即使没有操作将游戏挂机数小时也会计入时间中，如要避免此情况，请在离开前保存游戏。在“0.3.12.X”和更早版本中未跟踪</span></mouse>
+	<br>
+	<label><<radiobutton "$options.playtime" false autocheck>> 关闭</label> |
+	<label><<radiobutton "$options.playtime" true autocheck>> 开启</label>
+
+	<br>
+	<br>
+
+	<<if $passage isnot "Start">>
+		<<button "重启游戏">>
+			<<script>>
+				SugarCube.UI.restart();
+			<</script>>
+		<</button>>
+	<</if>>
+	<br>
+	<br>
+	<br>
+
+<</widget>>
+
+<<widget "optionsperformance">>
+	<<setupOptions>>
+	<span class="gold">图像</span>
+	<br>
+	<<if StartConfig.enableImages is true>>
+		<div>
+			<label><<checkbox "$options.images" 0 1 autocheck>> 启用图像显示</label>
+			<mouse class="tooltip-small linkBlue">(?)<span>在旧安卓系统上图片可能显示不正常</span></mouse>
+		</div>
+		<div><label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.combatImages" 0 1 autocheck>> 启用战斗图像</label></div>
+
+		<div><label data-target="images" data-disabledif="V.options.images===0">
+			<<checkbox "$options.bodywritingImages" false true autocheck>> 启用身体描写图片
+			<mouse class="tooltip-small linkBlue">(?)<span>禁用可能会提高性能，并可能防止图像无法正确加载</span></mouse>
+		</label></div>
+		<div><label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.silhouetteEnabled" false true autocheck>> 启用NPC描边</label></div>
+		<div><label data-target="images" data-disabledif="V.options.images===0">
+			<<checkbox "$options.tanImgEnabled" false true autocheck>>玩家肤色视觉显示
+			<mouse class="tooltip-small linkBlue">(?)<span>可能会影响某些设备的性能</span></mouse>
+		</label></div>
+		<div><label data-target='["images", "tanimgenabled"]' data-disabledif="V.options.images===0||V.options.tanImgEnabled===false">
+			<<checkbox "$options.tanningEnabled" false true autocheck>> 启用日晒变黑效果
+			<mouse class="tooltip-small linkBlue">(?)<span>稍后可能会移除禁用选项</span></mouse>
+		</label></div>
+		<br>
+
+		<span class="gold">动画</span>
+		<div><label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.sidebarAnimations" false true autocheck>> 侧边栏动画</label></div>
+		<div><label data-target='["images", "sidebaranimations"]' data-disabledif="V.options.images===0||V.options.sidebarAnimations===false"><<checkbox "$options.blinkingEnabled" false true autocheck>> 眨眼</label></div>
+		<div><label data-target="images" data-disabledif="V.options.images===0||V.options.combatImages===0">
+			<<checkbox "$options.combatAnimations" false true autocheck>> 战斗动画
+			<mouse class="tooltip-small linkBlue">(?)<span>禁用可能有助于提高性能并防止错误加载图像。Gif图像不会受到影响。首先尝试禁用侧边栏图像</span></mouse>
+		</label></div>
+		<div class="description"></div>
+		<<if $eyelidTEST is true>>
+			<div><label data-target='["images", "sidebaranimations"]' data-disabledif="V.options.images===0||V.options.sidebarAnimations===false"><<checkbox "$options.halfClosedEnabled" false true autocheck>>启用半闭眼图像显示</label></div>
+			<div class="description">当高度兴奋时，在侧边栏中画出半闭的眼睑。</div>
+		<</if>>
+		<br>
+
+
+		<<foldout true "_characterLightingFoldout">>
+			<span class="gold">角色光照</span>
+			<div onchange="new Wikifier(null, '<<updatesidebarimg>>')"><label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.characterLightEnabled" false true autocheck>> 启用角色光照</label></div>
+			<div data-target='["images", "characterLightEnabled"]' data-disabledif="V.options.images===0||V.options.characterLightEnabled===false" oninput="new Wikifier(null, '<<updatesidebarimg>>')">
+				<label>聚光灯<br>
+				<<numberslider "$options.lightSpotlight" $options.lightSpotlight 0 1 0.05>></label><br>
+				<label>渐变<br>
+				<<numberslider "$options.lightGradient" $options.lightGradient 0 1 0.05>></label><br>
+				<label>发光<br>
+				<<numberslider "$options.lightGlow" $options.lightGlow 0 1 0.05>></label><br>
+				<label>平直<br>
+				<<numberslider "$options.lightFlat" $options.lightFlat 0 1 0.05>></label><br>
+				<label data-target="images" data-disabledif="V.options.images===0||V.options.combatImages===0">战斗光照<br>
+				<<numberslider "$options.lightCombat" $options.lightCombat 0 1 0.05>></label><br>
+				<label>天使/魔鬼TF颜色组件<br>
+				<<numberslider "$options.lightTFColor" $options.lightTFColor 0 1 0.05>></label><br>
+			</div>
+		<</foldout>>
+		<br>
+
+		<span class="gold">历史记录长度</span>
+		<br>
+		<div class="description">允许回溯历史，最多N-1个段落。更改在设置退出时生效。<br>
+		<span class="red"><b>警告:</b> 会导致运行缓慢，并且大于5的数值可能会导致超出本地储存大小限制并<br>
+		<b>造成存档问题</b>。酌情调整。</span>
+		</div>
+		<<numberslider "$options.maxStates" $options.maxStates 1 20 1 $ironmanmode>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "optionsadvanced">>
+	<<setupOptions>>
+	<span class="gold">高级设置</span>
+	<br>
+	<label>
+		<<checkbox "$options.numpad" false true autocheck>>
+		启用numpad。如果由于翻译软件导致链接中断，则在移动设备上非常有用
+	</label>
+	<br>
+	<label>
+		<<checkbox "$options.newWardrobeStyle" true false autocheck>>
+		使用旧衣柜样式
+	</label>
+	<br>
+	<label>
+		<<checkbox "$options.useNarrowMarket" false true autocheck>>
+		使用“窄屏幕”版本的市场物品栏
+	</label>
+	<br>
+
+	<label>
+		<<checkbox "$options.skipStatisticsConfirmation" false true autocheck>>
+		查看额外统计信息时跳过请求确认
+	</label>
+	<br>
+
+	<label><<checkbox "$options.showDebugRenderer" false true autocheck>> 启用渲染器调试器(debugger)</label>
+	<br>
+	
+	/*
+	<br>
+	<div class="small-description">To fix animations that aren't playing correctly you can click on them, or press <code>[F]</code> key, or use the button below.</div>
+	<br>
+	<<button "Fix stuck animations">>
+		<<run fixStuckAnimations()>>
+	<</button>>
+	*/
+<</widget>>
