@@ -7,7 +7,7 @@
 	<<set _finally to ".">>
 	<<set _text_output to "">>
 
-	<<set _wearing to "You are " + (_topless ? "<span class='pink'>topless</span>, " : "") + "wearing ">>
+	<<set _wearing to "你身着" + (_topless ? "<span class='pink'>topless</span>, " : "") + "">>
 
 	<<if !_overNaked>>
 		<<clothingCaptionTextOver>>
@@ -21,7 +21,7 @@
 
 	<<set _text_output to _wearing>>
 	<<if _clothingCaptionItems.length is 1>>
-		<<set _text_output += (_nothingBut ? "nothing but" : "only")>>
+		<<set _text_output += (_nothingBut ? "只穿了" : "只有")>>
 	<</if>>
 
 	<<set _text_output += formatList(_clothingCaptionItems) + _finally>>
@@ -94,14 +94,14 @@
 	<!--Not wearing-->
 	<<if ($worn.over_upper.name isnot "naked" or $worn.upper.name isnot "naked") and
 	($worn.over_lower.name isnot "naked" or $worn.lower.name isnot "naked")>>
-		<<set _finally to " <span class='purple'>with nothing beneath.</span>">>
+		<<set _finally to " <span class='purple'>你下面什么都没穿。</span>">>
 	<<elseif $worn.over_upper.name is "naked" or $worn.over_lower.name is "naked" or
 	$worn.upper.name is "naked" or $worn.lower.name is "naked">>
-		<<set _finally to " <span class='purple'>and no underwear.</span>">>
+		<<set _finally to " <span class='purple'>并且没穿内衣</span>">>
 	<</if>>
 <<else>>
 	<<if $_exposed>>
-		<<set _wearing to "<span class='pink'>You are " + (_topless ? "topless, " : "") + "wearing ">>
+		<<set _wearing to "<span class='pink'>你 " + (_topless ? "topless, " : "") + "wearing ">>
 		<<set _finally to ".</span>">>
 	<</if>>
 	<<if $worn.under_upper.name isnot "naked" and $worn.under_lower.name isnot "naked">>
@@ -118,16 +118,16 @@
 
 		<<set _nothingBut to $_exposed>>
 		<<if !$_exposed and !_bottomless>>
-			<<set _finally to ". <span class='purple'>You are not wearing " + ($player.gender isnot "m" ? "any panties" : "undies") + ".</span>">>
+			<<set _finally to ". <span class='purple'>你没穿" + ($player.gender isnot "m" ? "胖次" : "内衣") + ".</span>">>
 		<</if>>
 	<<elseif $worn.under_lower.name isnot "naked">>
 		<!--Lower only-->
-		<<set $_pair to ($worn.under_lower.name.last() is "s" ? "a pair of" : "<<word under_lower>>")>>
+		<<set $_pair to ($worn.under_lower.name.last() is "s" ? "一副" : "<<word under_lower>>")>>
 		<<pushClothingCaption "under_lower" $_pair>>
 
 		<<set _nothingBut to $_exposed>>
 		<<if !$_exposed and !_topless and $player.breastsize gte 4 and ($player.gender isnot "m" or $backgroundTraits.includes("crossdresser"))>>
-			<<set _finally to ". <span class='purple'>You are not wearing a bra.</span>">>
+			<<set _finally to ". <span class='purple'>你没穿胸罩。</span>">>
 		<</if>>
 	<</if>>
 <</if>>
@@ -136,7 +136,7 @@
 <<widget "clothingCaptionTextGenitals">><<silently>>
 <<if $worn.genitals.name isnot "naked">>
 	<<if _bottomless>>
-		<<set $_text_output to " <span class='red'>Your <<genitalsintegrity>> $worn.genitals.name <<if $worn.genitals.anal_shield is 1>>with an anal shield<</if>><<if playerHasButtPlug()>> and $worn.butt_plug.name<</if>> gives you no comfort.</span>">>
+		<<set $_text_output to " <span class='red'>你<<genitalsintegrity>> $worn.genitals.name <<if $worn.genitals.anal_shield is 1>>with an anal shield<</if>><<if playerHasButtPlug()>> and $worn.butt_plug.name<</if>> gives you no comfort.</span>">>
 	<<else>>
 		<<set $_text_output to " You wear <<genitalsword>> <<genitalsintegrity>> $worn.genitals.name<<if $worn.genitals.anal_shield is 1>> with an anal shield<</if>><<if playerHasButtPlug()>> and $worn.butt_plug.name<</if>>.">>
 	<</if>>

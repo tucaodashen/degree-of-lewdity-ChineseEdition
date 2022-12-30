@@ -2,43 +2,43 @@
 
 <<bedclotheson "bed">>
 <<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>><<getTarget true>>
-You are in your bedroom.
+你在你的卧室里。
 
 <<set _furniture to $furniture.bedroom>>
 <<if _furniture.wallpaper>>
 	<<switch _furniture.wallpaper.name>>
 		<<case "vines">>
-			Lewd green vines writhe on the walls.
+			弯曲的绿色藤蔓在墙上扭动。
 			<<if $backgroundTraits.includes("plantlover")>>
-				Thoughts of sweet nectar wrack your mind.
+				一想到甜蜜的花蜜就让你魂牵梦萦。
 			<</if>>
 		<<case "tentacles">>
-			Purple tentacles slither on the walls.
+			紫色触手在墙上滑动。
 			<<if $demon gte 6>>
-				Thoughts of pleasure cross your mind.
+				快乐的想法掠过你的脑海。
 			<</if>>
 		<<case "plainwhite">>
-			Plain white wallpapers cover the walls.
+			墙上贴着朴素的白色壁纸。
 		<<case "wavywhite">>
-			The white wallpapers gradient to black in a wavy pattern. Is there a lewd subtext?
+			墙上贴着渐变的黑色条纹墙纸，搞得这里像是窑子一样。
 		<<case "hearts">>
-			Pink hearts cover the walls.
+			墙被粉红色爱心覆盖。
 		<<case "cowgirls">>
-			Cowgirls dance on the walls.
+			墙上全是牛仔女孩。
 		<<case "trees">>
-			Green trees bring you a feeling of being in a forest.
+			墙上的绿树让你感觉像是在森林里。
 		<<case "crosses">>
-			Golden crosses cover the walls.
+			“金壁辉煌”
 		<<default>> /* Custom */
-			Images of _furniture.wallpaper.name cover the walls.
+			墙上贴着 _furniture.wallpaper.name 壁纸
 			<<if ['dol', 'degrees of lewdity'].some(e => _furniture.wallpaper.name === e)>>
-				Somehow, they look familiar.
+				不知道为啥，它们看起来很相似。
 			<<elseif _furniture.wallpaper.name.startsWith('&lt;&lt')>>
-				<span class="black">You feel like you got caught cheating.</span>
+				<span class="black">你感觉就像是作弊被抓了一样。</span>
 			<</if>>
 	<</switch>>
 <<else>>
-	Bleak walls protect you from the outside.
+	周围光秃秃的墙壁把你和外界隔开。
 <</if>>
 
 <<set _deco to Furniture.get('decoration')>>
@@ -46,11 +46,11 @@ You are in your bedroom.
 	<br>
 	<<switch _deco.name>>
 		<<case "bearplushie">>
-			<<furnitureicon _deco.iconFile>>The _deco.name is sitting in a corner.
+			<<furnitureicon _deco.iconFile>> _deco.name 坐在拐角。
 		<<case "owl plushie">>
-			<<furnitureicon _deco.iconFile>>The _deco.name stares down from the wardrobe, blending into the gloom.
+			<<furnitureicon _deco.iconFile>> _deco.name 躲在衣柜顶部的黑暗中观察整个房间。
 		<<default>>
-			<<furnitureicon _deco.iconFile>>The _deco.name is hanging on a wall.
+			<<furnitureicon _deco.iconFile>> _deco.name 挂在墙上。
 	<</switch>>
 <</if>>
 
@@ -59,9 +59,9 @@ You are in your bedroom.
 	<br>
 	<<switch _windowsill.name>> /* can be expanded further */
 		<<case "ominous jar">> /* unused */
-			<<furnitureicon _windowsill.iconFile>>_windowsill.nameCap stands on the windowsill menacingly.
+			<<furnitureicon _windowsill.iconFile>>_windowsill.nameCap 神奇地站在窗沿上。
 		<<default>>
-			<<furnitureicon _windowsill.iconFile>> Your _windowsill.name sits on the windowsill.
+			<<furnitureicon _windowsill.iconFile>> 你的 _windowsill.name 坐落在窗沿上。
 	<</switch>>
 <</if>>
 
@@ -69,17 +69,17 @@ You are in your bedroom.
 	<br>
 	<<switch _furniture.poster.name>>
 		<<case "cowgirl">>
-			A cowgirl poster hangs on a wall.
+			墙上挂着一张女牛仔海报。
 		<<case "cat">>
-			A poster of a cat hangs on a wall. The text below reads, "Hang in there!"
+			一张猫猫海报挂在墙上，下面有一行字“把我挂在这！”。
 		<<case "puppy">>
-			A puppy poster hangs on a wall.
+			墙上挂着一张小狗的海报。
 		<<default>> /* Custom */
-			A poster of _furniture.poster.name hangs on a wall.
+			墙上挂着一张 _furniture.poster.name 海报。
 			<<if ['dol', 'degrees of lewdity'].some(e => _furniture.poster.name === e)>>
-				You feel an odd sense of familiarity.
+				你感到一种奇怪的熟悉感。
 			<<elseif _furniture.poster.name.startsWith('&lt;&lt;')>>
-				<span class="black">You feel like you got caught cheating.</span>
+				<span class="black">你感觉心里不太舒服。</span>
 			<</if>>
 	<</switch>>
 <</if>>
@@ -87,7 +87,7 @@ You are in your bedroom.
 <br><br>
 <<if $robinbed is "yours" and $hour gte 6 and !$possessed>>
 	<<unset $robinbed>>
-	<<npc Robin>><<person1>>Robin yawns and heads to <<his>> own room.<<endevent>>
+	<<npc Robin>><<person1>>Robin打了个哈欠，然后回到了 <<his>>自己的房间。<<endevent>>
 	<<if $hour is 6 and $minute lte 20>><<run setRobinLocationOverride("orphanage", 6)>><</if>>
 	<br><br>
 <</if>>
@@ -255,7 +255,7 @@ You are in your bedroom.
 		<<containersLink "ind">>
 	<</if>>
 	<br>
-	The hallway outside connects to the rest of the orphanage.
+	外面的走廊与孤儿院的其他部分相连。
 	<br>
 	<<if $exposed gte 2>>
 		<<if $daystate isnot "night">>
@@ -365,7 +365,7 @@ You are in your bedroom.
 				<br><br>
 			<</if>>
 		<<else>>
-			You are not wearing underwear! The thought of going out like this quickens your pulse.
+			你没穿胖次！你想到要这样出去你就十分兴奋。
 			<br><br>
 			<<link [[It won't hurt|Bedroom]]>><<set $underwarningskip to 1>><</link>>
 			<br><br>
