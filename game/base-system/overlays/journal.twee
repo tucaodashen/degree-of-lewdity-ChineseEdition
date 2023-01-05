@@ -1,48 +1,48 @@
 :: Widgets Journal [widget]
 <<widget "journal">>
 <br>
-It is the $monthday<<monthday>> of <<month>> $year.
+今天是$year <<month>> $monthday<<monthday>>。
 <br>
-It has been $days days since the game started.
+这是游戏开始的第 $days 天。
 <br>
-The game started in $startingseason.
+游戏在$startingseason开始。
 <br>
 <<if $hardmodedays isnot undefined>>
-	You survived <span class="gold">$hardmodedays</span> days on hard mode.
+	你在硬核模式中存活了<span class="gold">$hardmodedays</span>天。
 	<br>
 <</if>>
 <<schoolterm>>
 <br>
-It is $season.
+现在是$season。
 <br><br>
 <<if $antiquemoney gt 0>>
-	You are carrying antiques worth £<<print $antiquemoney>>.
+	你携带的古董值 £<<print $antiquemoney>>.
 	<br>
 <</if>>
 <<if $blackmoney gt 0>>
-	You are carrying £<<print $blackmoney>> in stolen goods.
+	你偷了 £<<print $blackmoney>>的东西。
 	<br>
 <</if>>
 <<set _plant_keys to Object.keys($plants)>>
 <<for _t to 0; _t lt _plant_keys.length; _t++>>
 	<<if $plants[_plant_keys[_t]].amount gte 1>><<set _plant_temp to 1>>
-		You have <span class="gold"><<print $plants[_plant_keys[_t]].amount>></span>
+		你有<span class="gold"><<print $plants[_plant_keys[_t]].amount>></span>
 		<<if $options.images is 1 and setup.plants[_plant_keys[_t]].icon>>
 			<img class="tending_icon" @src="`img/misc/icon/tending/` + setup.plants[_plant_keys[_t]].icon">
 		<</if>>
 		<<print $plants[_plant_keys[_t]].plural>>. |
 	<</if>>
 <</for>>
-<<if _plant_temp is 1>>You can sell them by renting a stand on Connudatus Street at dawn.<br><</if>>
+<<if _plant_temp is 1>>你可以在黎明时分在康努达图斯街租一个摊位来卖东西。<br><</if>>
 <<if $phials_held gte 2>>
-	You are carrying $phials_held phials of aphrodisiac. You can sell them on Elk Street. <br>
+	你有$phials_held瓶春药。 你可以在麋鹿街上卖。 <br>
 <<elseif $phials_held gte 1>>
-	You are carrying a phial of aphrodisiac. You can sell it on Elk Street. <br>
+	你有一瓶春药药。你可以在麋鹿街卖。<br>
 <</if>>
 <<if $lurkers_held gte 2>>
-	You are carrying $lurkers_held lurkers. <br>
+	你有 $lurkers_held lurkers. <br>
 <<elseif $lurkers_held is 1>>
-	You are carrying a lurker. <br>
+	你有一个lurker（我是实在不知道这个lurker是什么东西） <br>
 <</if>>
 <br>
 
@@ -58,82 +58,81 @@ It is $season.
 
 <<if $rentday isnot undefined>>
 	<<if $renttime lte 0>>
-		Bailey is looking for you, and wants <<printmoney $rentmoney>>.
+		Bailey正在找你,等着你的<<printmoney $rentmoney>>.
 		<br>
 	<<else>>
-		Bailey wants <<printmoney $rentmoney>> on <<rentday>>.
+		Bailey要收<<printmoney $rentmoney>> on <<rentday>>.
 		<br>
 	<</if>>
 <<elseif $rentmoney isnot undefined>>
-	Bailey wants <<printmoney $rentmoney>>.
+	Bailey要收<<printmoney $rentmoney>>.
 	<br>
 <</if>>
 
 <<if $psych is 1>>
-	You have an appointment with Doctor Harper on Friday.
+	你星期五和Harper医生有个预约。
 	<br>
 <</if>>
 
 <<if $eden_asylum_window is 1 and $location is "asylum">>
 	<<if $hour lt 22>>
-		Eden will be watching the asylum at <<ampm 20 00>> tonight.
+		Eden今晚<<ampm 20 00>>会监视精神病院。
 	<<else>>
-		Eden is watching the asylum, waiting for you to mark your room.
+		Eden正在监视精神病院,等着你给房间标上记号。
 	<</if>>
 <</if>>
 
 <<if $daily.eden.distract gte 1 and $location is "asylum">>
 	<<if $hour lt 21>>
-		Eden will create a distraction at <<ampm 21 00>> tonight.
+		Eden在今晚<<ampm 21 00>>会走神。
 	<</if>>
-<</if>>
+<</if>>	
 
 <<if $brothelshowdata.type isnot "none" and $brothelshowdata.intro>>
 	<<if $weekday is 6 and not $brothelshowdata.done>>
-		You're expected to perform at the brothel today.
+		你今天应该在妓院表演。
 		<br>
 	<<else>>
-		You're expected to perform at the brothel on Friday.
+		你星期五应该在妓院表演。
 		<br>
 	<</if>>
 <<elseif $brothelshowdata.intro>>
-	You can star in shows at the brothel.
+	你可以在妓院里表演。
 	<br>
 <</if>>
 
 <<if $dockwork gte 2>>
-	You can work at the docks starting from <<ampm 7 00>> - <<ampm 8 00>> on any day except school days.
+	你在不上学的时候在码头上从<<ampm 7 00>>工作到<<ampm 8 00>>。
 	<br>
 <</if>>
 
 <<if $pubtask2 is 1>>
-	Return the black box to Landry at the pub.
+	你在酒吧里把黑盒子还给了Landry。
 	<br>
 <<elseif $pubtask>>
-	Landry wants you to retrieve a black box from the $pubtask.
+	Landry让你从$pubtask 取回一个黑盒子。
 	<br>
 <</if>>
 
 <<if $police_hack is 1>>
-	Landry might be able to help you with the locked police computer.
+	Landry也许可以帮你解锁警察用的电脑。
 	<br>
 <<elseif $pub_hack_job is 1>>
-	Landry wants you to find a hacker supposedly named 'Mickey' living at the Domus street orphanage.
-	<br>
+	Landry想让你找到一个住在孤儿院的黑客，Mickey。
 <<elseif $pub_hack_job is 2>>
-	Convince 'Mickey' to work with you.
+	说服Mickey和你一起工作。
 	<br>
 <<elseif $pub_hack_job is 3>>
 	<<if !$hacker_tasks.includes("bailey")>>
-		'Mickey' wants you to implant a device on Bailey's computer while Bailey is logged in.
+		Mickey想让你在Bailey登录时在她的电脑上植入后门。
 		<br>
 	<</if>>
 	<<if !$hacker_tasks.includes("leighton")>>
-		'Mickey' wants you to steal memory cards from a strongbox under Leighton's desk.
+		Mickey想让你从Leighton的桌子底下偷来储存卡。
 		<br>
 	<</if>>
 	<<if $hacker_tasks.length gte 2>>
-		You need to talk to Landry about 'Mickey'.
+		你需要和Landry谈谈Mickey的事。
 		<br>
 	<</if>>
 <</if>>
@@ -142,20 +141,20 @@ It is $season.
 	<<if $pubfame.status is "accepted">>
 		<<switch $pubfame.task>>
 			<<case "river">>
-				'Mickey' wants you to check on River, the maths teacher at your school.
+				'Mickey'想让你检查一下River,你们学校的数学老师。
 			<<case "gwylan">>
-				'Mickey' wants you to find a specific snow globe at <<if $forest_shop_intro is 1>>Gwylan's shop<<else>>the shop on the outskirts of the forest<</if>>.
+				'Mickey'想让你在 <<if $forest_shop_intro is 1>>找到一个特殊的雪球，Gwylan的店<<else>>这个商店在森林的边缘。<</if>>.
 			<<case "temple">>
-				'Mickey' wants you to find a book on architecture at the temple with a password on the inside cover.
+				'Mickey'想让你在庙里找一本有关建筑学的书，密码就在扉页里。
 			<<case "kylar">>
-				'Mickey' wants you to deliver a letter to
+				'Mickey'想让你递封信
 				<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "prison">>
-					the police station, so they can give it to Kylar.
+					给派出所，这样Kylar就能知道了。
 				<<else>>
-					Kylar<<if $NPCName[$NPCNameList.indexOf("Kylar")].init isnot 1>>, a student at your school<</if>>.
+					给Kylar<<if $NPCName[$NPCNameList.indexOf("Kylar")].init isnot 1>>, 你们学校里的一个学生<</if>>。
 				<</if>>
 			<<case "wren">>
-				'Mickey' wants you to deliver a letter to <<if $wren_intro is undefined>>a <<nnpc_gender "Wren">> named Wren. <<nnpc_He "Wren">> can be found at Remy's estate in the moor, or at the docks at night<<else>>Wren<</if>>.
+				'Mickey'想要你给<<if $wren_intro is undefined>><<nnpc_gender "Wren">> 送封信。 <<nnpc_He "Wren">>可以在沼泽地Remy的庄园里被找到，或者在码头找到<<else>>Wren<</if>>.
 			<<case "hospital">>
 				'Mickey' wants you to steal a keycard from the hospital.
 				<<if $location is "asylum">>
